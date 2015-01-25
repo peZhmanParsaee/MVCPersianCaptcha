@@ -1,0 +1,25 @@
+﻿body {
+    direction: rtl;
+    background: #efefef;
+    font-family: tahoma;
+    font-size: 12px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 940px;
+}
+
+.title span{
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+a {
+    color: #0184B6;
+}
+
+.success-message {
+    color: #356635;
+}

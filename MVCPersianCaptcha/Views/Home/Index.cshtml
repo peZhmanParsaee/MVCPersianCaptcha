@@ -1,0 +1,63 @@
+﻿@model MVCPersianCaptcha.Models.LogOnModel
+
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h2>ورود</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.UserName, new { autocomplete = "off" })
+            @Html.ValidationMessageFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="editor-field">
+            @Html.PasswordFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+        
+        <div class="editor-label">
+            @Html.Label("تصویر امنیتی")
+        </div>
+        <div class="editor-field">
+            <img class="captcha-image" src="@Url.Action("CaptchaImage", "Home", routeValues: new{ rdnDate = DateTime.Now.Ticks })"/>
+            <a href="#" class="refresh-captcha">تازه سازی</a>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CaptchaInputText)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.CaptchaInputText, new { autocomplete = "off" })
+            @Html.ValidationMessageFor(model => model.CaptchaInputText)
+        </div>
+        
+        <div class="success-message">
+            @TempData["message"]
+        </div>
+
+        <p>
+            <input type="submit" value="ورود" />
+        </p>
+    </fieldset>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $('a.refresh-captcha').on('click', function (e) {
+            e.preventDefault();
+            $('.captcha-image').attr('src', "@Url.Action("CaptchaImage")" + "?t=" + new Date().getTime());
+            
+        });
+    </script>
+}
