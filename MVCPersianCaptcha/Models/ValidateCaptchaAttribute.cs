@@ -49,15 +49,15 @@ namespace MVCPersianCaptcha.Models
         #endregion
 
         #region Ctors (2)
-        
-        public ValidateCaptchaAttribute()
+
+        public ValidateCaptchaAttribute(int expireTimeCaptchaCodeBySeconds=30)
         {
             ErrorWasHappened = "خطایی اتفاق افتاده است";
             CaptchaCodeIsRequired = "لطفا کد امنیتی را وارد کنید";
-            TimeIsExpired = "حداکثر مهلت وارد کردن کد امنیتی 30 ثانیه است";
+            TimeIsExpired = "کد امنیتی منقضی شده است دوباره اقدام کنید.";
             CaptchaCodeIsIncorrect = "کد امنیتی را اشتباه وارد کرده اید";
             CookieMustEnabled = "باید ابتدا قابلیت کوکی ها را در مرورگر خود فعال کنید";
-            ExpireTimeCaptchaCodeBySeconds = 30;
+            ExpireTimeCaptchaCodeBySeconds = expireTimeCaptchaCodeBySeconds;
         }
 
         public ValidateCaptchaAttribute(string errorWasHappened, string captchaCodeIsRequired, string captchaCodeIsIncorrect,
@@ -142,7 +142,7 @@ namespace MVCPersianCaptcha.Models
             double secondsDiff = (DateTime.Now - DateTime.Parse(generatedCaptchaDateTime)).TotalSeconds;
 
 
-            if (secondsDiff > 30) //-- اگر بیشتر از 30 ثانیه طول کشیده باشد تا فرم حاوی تصویر امنیتی پست شود
+            if (secondsDiff > ExpireTimeCaptchaCodeBySeconds) //-- منقضی شدن زمان کد امنیتی -- پیش فرض 30 ثانیه
             {
                 controllerBase.ViewData.ModelState.AddModelError("CaptchaInputText", TimeIsExpired);
                 return;
